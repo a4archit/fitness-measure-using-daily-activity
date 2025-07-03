@@ -5,9 +5,15 @@ import pandas
 from typing import Literal
 
 
+
+
 ## declaring models path
 DECISION_TREE_MODEL_5003 = './model/model_dtree_5003.pkl'
 DECISION_TREE_MODEL_5003_SCALER = './model/scaler_model_dtree_5003.pkl'
+MODEL_NAME = 'Fitness Measure'
+MODEL_VERSION = '1.0'
+
+
 
 
 def load_model(scaler_path: str = None):
