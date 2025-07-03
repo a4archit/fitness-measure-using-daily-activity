@@ -2,26 +2,50 @@
 import pickle
 import pandas 
 
+from typing import Literal
 
-def load_model():
+
+## declaring models path
+DECISION_TREE_MODEL_5003 = './model/model_dtree_5003.pkl'
+DECISION_TREE_MODEL_5003_SCALER = './model/scaler_model_dtree_5003.pkl'
+
+
+def load_model(scaler_path: str = None):
     ## import model
-    model = pickle.load(open('./model/model_9451.pkl', 'rb'))
-    return model 
+    model = pickle.load(open(DECISION_TREE_MODEL_5003, 'rb'))
+
+    if scaler_path:
+        scaler = pickle.load(open(scaler_path, 'rb'))
+
+    return model, scaler
+
+
 
 
 
 class FitnessMeasure:
 
     def __init__(self):
-        self.model = load_model()
+        self.model, self.scaler = load_model(scaler_path=DECISION_TREE_MODEL_5003_SCALER)
 
 
-    def predict(self, total_steps: int, very_active_minutes: float, calories: int) -> int:
+
+    def predict(
+            self, 
+            heart_rate: float,
+            blood_oxygen_level: float,
+            steps_counts: int,
+            sleep_duration: float,
+            activity_level: Literal[0,1,2]
+        ) -> int:
+
         ## collecting user data
         data: dict = {
-            'TotalSteps': total_steps,
-            'VeryActiveMinutes': very_active_minutes,
-            'Calories': calories
+            'Heart Rate (BPM)': heart_rate,
+            'Blood Oxygen Level (%)': blood_oxygen_level,	
+            'Step Count': steps_counts,	
+            'Sleep Duration (hours)': sleep_duration,	
+            'Activity Level': activity_level
         }
 
         ## converting as pandas dataframe

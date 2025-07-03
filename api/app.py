@@ -34,21 +34,31 @@ def general_routes():
     return JSONResponse(status_code=200, content=routes_basic_info)
 
 
-
+'''
+heart_rate: float,
+blood_oxygen_level: float,
+steps_counts: int,
+sleep_duration: float,
+activity_level: Literal[0,1,2]
+'''
 
 ## prediction route
 @app.post("/predict")
 def predict(details: UserDetails):
 
     # fetching user details
-    steps = details.total_steps
-    active_time = details.very_active_minutes
-    calories = details.calories
+    heart_rate = details.heart_rate
+    blood_oxygen_level = details.blood_oxygen
+    steps_counts = details.steps
+    sleep_durations = details.sleep_duration
+    activity_level = details.activity_level
 
     prediction = model.predict(
-        total_steps=steps,
-        very_active_minutes=active_time,
-        calories=calories
+        heart_rate=heart_rate,
+        blood_oxygen_level=blood_oxygen_level,
+        steps_counts=steps_counts,
+        sleep_duration=sleep_durations,
+        activity_level=activity_level
     )
 
     prediction_msg = "Person is physically fit." if prediction else "Person is not physically fit."
@@ -57,9 +67,7 @@ def predict(details: UserDetails):
         'prediction value': prediction,
         'prediction message': prediction_msg,
         'input details': {
-            'total steps': steps,
-            'very active time': active_time,
-            'calories': calories
+            'msg':'updates will soon............'
         }
     }
 
